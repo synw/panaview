@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:panaview/conf.dart';
 import 'widgets/menu.dart';
 import 'layout.dart';
-import 'explorer.dart';
 import 'zones/select_packages_dir.dart';
 
 class TopAppBloc extends StatelessWidget {
@@ -13,7 +12,7 @@ class TopAppBloc extends StatelessWidget {
     return Container(
         color: const Color(0xffcecece),
         child: Column(children: <Widget>[
-          //const TopMenu(),
+          const TopMenu(),
           Container(
               height: 1.0,
               width: MediaQuery.of(context).size.width,

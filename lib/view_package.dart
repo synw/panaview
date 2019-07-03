@@ -58,6 +58,7 @@ class _ViewPackageState extends State<ViewPackage> {
             analyzing = false;
             analysis = data.analysis;
             hasAnalysis = true;
+            logs = <Text>[];
           });
       }
     });
