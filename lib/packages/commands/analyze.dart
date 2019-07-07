@@ -23,20 +23,18 @@ Future<void> analyze(
     StreamSubscription out;
     StreamSubscription err;
     out = process.stdout.listen((data) {
-      // save
+      logger.add(AnalysisLog(type: AnalysisLogType.analysisCompleted));
+      out.cancel();
+      err.cancel();
       final Directory dir =
           Directory("${conf.appConfigDir.path}/${package.name}");
       if (!dir.existsSync()) dir.createSync();
       final File file = File("${dir.path}/analysis.json");
-      if (!file.existsSync()) file.createSync();
+      print("Writing analysis file");
       file.writeAsBytesSync(data);
-      // process
       final String msg = String.fromCharCodes(data);
-      final Map<String, dynamic> res = json.decode(msg) as Map<String, dynamic>;
-      logger.add(AnalysisLog(type: AnalysisLogType.analysisCompleted));
+      final res = json.decode(msg) as Map<String, dynamic>;
       processAnalysisResults(res, logger);
-      out.cancel();
-      err.cancel();
     });
     err = process.stderr.listen((data) {
       final String msg = String.fromCharCodes(data);

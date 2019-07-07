@@ -18,7 +18,7 @@ class AnalysisResultsDisplay extends StatelessWidget {
     final res = <Widget>[Text("Sdk: ${analysis.sdkVersion}")];
     if (package.isFlutter) {
       res.add(Text("Flutter version: ${analysis.flutterVersion}"));
-      res.add(Text("Flutter version: ${analysis.flutterChannel}"));
+      res.add(Text("Flutter channel: ${analysis.flutterChannel}"));
     }
     if (deps.isEmpty)
       res.add(const Text("Dependencies: none"));
@@ -35,28 +35,23 @@ class AnalysisResultsDisplay extends StatelessWidget {
   }
 
   List<Widget> summaryData() {
-    final int numSuggestions = analysis.health.suggestions.length +
-        analysis.maintenance.suggestions.length;
     final res = <Widget>[
       formatScore(analysis.health.score, "Health"),
       formatScore(analysis.maintenance.score, "Maintenance"),
-      Text("Errors: ${analysis.health.numErrors}"),
-      Text("Warnings: ${analysis.health.numWarnings}"),
-      Text("Hints: ${analysis.health.numHints}"),
-      Text("Suggestions: $numSuggestions"),
+      Text("Errors: ${analysis.numErrors}"),
+      Text("Warnings: ${analysis.numWarnings}"),
+      Text("Hints: ${analysis.numHints}"),
     ];
     return res;
   }
 
   ListView suggestions() {
-    final List<PackageSuggestion> allSugs = analysis.maintenance.suggestions;
-    allSugs.addAll(analysis.health.suggestions);
     final w = ListView.builder(
       shrinkWrap: true,
-      itemCount: allSugs.length,
+      itemCount: analysis.suggestions.length,
       itemBuilder: (BuildContext context, int i) {
         return ListTile(
-          title: Suggestion(sug: allSugs[i]),
+          title: Suggestion(sug: analysis.suggestions[i]),
         );
       },
     );
@@ -113,9 +108,13 @@ class Suggestion extends StatelessWidget {
 
   final PackageSuggestion sug;
 
-  Widget formatLevel() {
+  Widget format() {
     Widget w;
     switch (sug.level) {
+      case "error":
+        w = Text("Error",
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold));
+        break;
       case "warning":
         w = Text("Warning",
             style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold));
@@ -130,12 +129,25 @@ class Suggestion extends StatelessWidget {
     return w;
   }
 
+  String type() {
+    String t;
+    switch (sug.type) {
+      case SuggestionType.health:
+        t = "health";
+        break;
+      case SuggestionType.maintenance:
+        t = "maintenance";
+    }
+    return t;
+  }
+
   @override
   Widget build(BuildContext context) {
+    String _type = type();
     return Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: Column(children: <Widget>[
-          Row(children: <Widget>[formatLevel(), Text(": ${sug.title}")]),
+          Row(children: <Widget>[format(), Text(" ($_type): ${sug.title}")]),
           const Padding(padding: EdgeInsets.only(bottom: 10.0)),
           Text("${sug.description}")
         ]));

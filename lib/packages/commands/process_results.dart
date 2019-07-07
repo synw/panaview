@@ -25,42 +25,47 @@ void processAnalysisResults(
           version: data["pubspec"]["dependencies"][key].toString()));
   }
   analysis.dependencies = deps;
+  var numErrors = int.parse(data["health"]["analyzerErrorCount"].toString());
+  var numWarnings =
+      int.parse(data["health"]["analyzerWarningCount"].toString());
+  var numHints = int.parse(data["health"]["analyzerHintCount"].toString());
   // health
-  final List<PackageSuggestion> hsug = [];
-  if (data["health"].containsKey("suggestion") == true) {
+  final sugs = <PackageSuggestion>[];
+  if (data["health"].containsKey("suggestions") == true) {
     for (final sug in data["health"]["suggestions"]) {
-      var s = PackageSuggestion(
-        description: sug["description"].toString(),
-        file: sug["file"].toString(),
-        level: sug["level"].toString(),
-        title: sug["title"].toString(),
-        from: sug["code"].toString(),
-      );
+      final s = PackageSuggestion(
+          description: sug["description"].toString(),
+          file: sug["file"].toString(),
+          level: sug["level"].toString(),
+          title: sug["title"].toString(),
+          from: sug["code"].toString(),
+          type: SuggestionType.health);
       if (sug.containsKey("score") == true)
         s.scoreImpact = double.parse(sug["score"].toString());
-      hsug.add(s);
+      sugs.add(s);
     }
   }
-  analysis.health = PackageHealth(
-      numErrors: int.parse(data["health"]["analyzerErrorCount"].toString()),
-      numWarnings: int.parse(data["health"]["analyzerWarningCount"].toString()),
-      numHints: int.parse(data["health"]["analyzerHintCount"].toString()),
-      score: double.parse(data["scores"]["health"].toString()),
-      suggestions: hsug);
+  analysis.health =
+      PackageHealth(score: double.parse(data["scores"]["health"].toString()));
   // maintenance
-  final List<PackageSuggestion> msug = [];
   if (data["maintenance"].containsKey("suggestions") == true)
     for (final sug in data["maintenance"]["suggestions"]) {
-      var s = PackageSuggestion(
-        description: sug["description"].toString(),
-        file: sug["file"].toString(),
-        level: sug["level"].toString(),
-        title: sug["title"].toString(),
-        from: sug["code"].toString(),
-      );
+      final level = sug["level"].toString();
+      final s = PackageSuggestion(
+          description: sug["description"].toString(),
+          file: sug["file"].toString(),
+          level: level,
+          title: sug["title"].toString(),
+          from: sug["code"].toString(),
+          type: SuggestionType.maintenance);
       if (sug.containsKey("score") == true)
         s.scoreImpact = double.parse(sug["score"].toString());
-      msug.add(s);
+      sugs.add(s);
+      if (level == "hint")
+        numHints = numHints + 1;
+      else if (level == "warning")
+        numWarnings = numWarnings + 1;
+      else if (level == "error") numErrors = numErrors + 1;
     }
   final List<MissingInPackage> missing = [];
   if (data["maintenance"]["missingChangelog"] == true)
@@ -75,7 +80,6 @@ void processAnalysisResults(
       experimental: data["maintenance"]["isExperimentalVersion"] == true,
       preRelease: data["maintenance"]["isPreReleaseVersion"] == true,
       strongMode: data["maintenance"]["strongModeEnabled"] == true,
-      suggestions: msug,
       score: double.parse(data["scores"]["maintenance"].toString()),
       missing: missing);
   final List<PackageFile> files = [];
@@ -87,6 +91,10 @@ void processAnalysisResults(
         isFormated: data["dartFiles"][key]["isFormatted"] == true,
         codeProblems: data["dartFiles"][key]["codeProblems"]));
   }
+  analysis.suggestions = sugs;
+  analysis.numErrors = numErrors;
+  analysis.numHints = numHints;
+  analysis.numWarnings = numWarnings;
   analysis.timeToComplete = int.parse(data["stats"]["totalElapsed"].toString());
   analysis.timeToCompleteFormated =
       (analysis.timeToComplete / 1000).toStringAsFixed(1);

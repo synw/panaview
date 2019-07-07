@@ -2,6 +2,8 @@ import 'package:meta/meta.dart';
 
 enum MissingInPackage { changelog, example, readme, analysisOptions }
 
+enum SuggestionType { health, maintenance }
+
 class PackageAnalysis {
   String version;
   List<PackageDependency> dependencies;
@@ -14,6 +16,10 @@ class PackageAnalysis {
   List<PackageFile> files;
   int timeToComplete;
   String timeToCompleteFormated;
+  List<PackageSuggestion> suggestions;
+  int numErrors;
+  int numWarnings;
+  int numHints;
 }
 
 class PackageDependency {
@@ -24,31 +30,20 @@ class PackageDependency {
 }
 
 class PackageHealth {
-  PackageHealth(
-      {@required this.numErrors,
-      @required this.numWarnings,
-      @required this.numHints,
-      @required this.suggestions,
-      @required this.score});
+  PackageHealth({@required this.score});
 
-  final int numErrors;
-  final int numWarnings;
-  final int numHints;
-  final List<PackageSuggestion> suggestions;
   final double score;
 }
 
 class PackageMaintenance {
   PackageMaintenance(
       {@required this.missing,
-      @required this.suggestions,
       @required this.strongMode,
       @required this.experimental,
       @required this.preRelease,
       @required this.score});
 
   final List<MissingInPackage> missing;
-  final List<PackageSuggestion> suggestions;
   final bool strongMode;
   final bool experimental;
   final bool preRelease;
@@ -62,6 +57,7 @@ class PackageSuggestion {
       @required this.title,
       @required this.description,
       @required this.file,
+      @required this.type,
       this.scoreImpact});
 
   final String from;
@@ -69,6 +65,7 @@ class PackageSuggestion {
   final String title;
   final String description;
   final String file;
+  final SuggestionType type;
   double scoreImpact;
 }
 
