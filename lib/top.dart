@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:panaview/conf.dart';
+import 'package:provider/provider.dart';
 import 'widgets/menu.dart';
-import 'layout.dart';
-import 'zones/select_packages_dir.dart';
+import 'state.dart';
 
-class TopAppBloc extends StatelessWidget {
-  final _iconColor = Colors.blueGrey[500];
-
+class _TopAppBlocState extends State<TopAppBloc> {
   @override
   Widget build(BuildContext context) {
+    final update = Provider.of<UpdateAction>(context);
     return Container(
         color: const Color(0xffcecece),
         child: Column(children: <Widget>[
@@ -21,21 +19,13 @@ class TopAppBloc extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: AppActionsBar(children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.folder_special, color: _iconColor),
-                    onPressed: () {
-                      setStatus("Pick a folder for packages");
-                      zones.pushChild("side", SelectPackagesDirZone());
-                    },
-                  ),
-                ]),
+                child: update.state.appBarZone,
               ),
               Column(
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.fromLTRB(10.0, 0, 30.0, 0),
-                    child: zones.getZone("status"),
+                    child: update.state.statusZone,
                   )
                 ],
               )
@@ -50,15 +40,7 @@ class TopAppBloc extends StatelessWidget {
   }
 }
 
-class AppActionsBar extends StatelessWidget {
-  AppActionsBar({@required this.children});
-
-  final List<Widget> children;
-
+class TopAppBloc extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Row(children: children));
-  }
+  _TopAppBlocState createState() => _TopAppBlocState();
 }

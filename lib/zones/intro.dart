@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../conf.dart';
-import '../layout.dart';
 import 'packages_dir.dart';
 import '../view_package.dart';
 
@@ -19,10 +19,11 @@ class _IntroZoneState extends State<IntroZone> {
         packagesDir = Directory(packagesDirPath);
         hasPackagesDir = true;
         clearStatus();
-        zones.pushChild("side", PackagesDir());
-      } else
+        setSide(PackagesDir());
+      } else {
         setStatus("Pick a folder for packages");
-      zones.pushChild("main", ViewPackage());
+      }
+      setMain(ViewPackage());
     });
     super.initState();
     _ready.complete();
