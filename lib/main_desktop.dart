@@ -15,8 +15,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<UpdateAction>.value(
-      initialData: UpdateAction(),
+    return StreamProvider<Store>.value(
+      initialData: Store(),
       value: updateController.stream,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

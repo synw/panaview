@@ -20,9 +20,11 @@ class _ViewPackageState extends State<ViewPackage> {
   bool analyzing = false;
   bool hasAnalysis = false;
 
+  StreamSubscription<CodePackage> _currentPackageSub;
+
   @override
   void initState() {
-    currentPackage.stream.listen((data) {
+    _currentPackageSub = currentPackage.stream.listen((data) {
       setState(() {
         logs = <Text>[];
         package = data;
@@ -32,7 +34,7 @@ class _ViewPackageState extends State<ViewPackage> {
       // load previous analysis data
       for (final dir in conf.appConfigDir.listSync()) {
         if (basename(dir.path) == package.name) {
-          var f =
+          final f =
               File("${conf.appConfigDir.path}/${package.name}/analysis.json");
           final bytes = f.readAsBytesSync();
           final String msg = String.fromCharCodes(bytes);
@@ -126,6 +128,7 @@ class _ViewPackageState extends State<ViewPackage> {
   @override
   void dispose() {
     commandLog.close();
+    _currentPackageSub.cancel();
     super.dispose();
   }
 }

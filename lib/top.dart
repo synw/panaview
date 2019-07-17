@@ -6,7 +6,7 @@ import 'state.dart';
 class _TopAppBlocState extends State<TopAppBloc> {
   @override
   Widget build(BuildContext context) {
-    final update = Provider.of<UpdateAction>(context);
+    final update = Provider.of<Store>(context);
     return Container(
         color: const Color(0xffcecece),
         child: Column(children: <Widget>[

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:filex/filex.dart';
+import 'packages_dir.dart';
 import '../conf.dart';
 
 class SelectPackagesDirZone extends StatelessWidget {
@@ -16,7 +17,11 @@ class SelectPackagesDirZone extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(0, 0, 3.0, 0),
                       child: Icon(Icons.file_download,
                           color: Colors.grey, size: 20.0)),
-                  onTap: () => setPackagesDir(Directory(item.item.path)));
+                  onTap: () {
+                    final dir = Directory(item.item.path);
+                    setPackagesDir(dir);
+                    setSide(PackagesDir(packagesDir: dir));
+                  });
             }));
   }
 }

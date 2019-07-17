@@ -1,20 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:desktopia/desktopia.dart';
+import 'package:panaview/view_package.dart';
+import 'package:provider/provider.dart';
 import '../models/package.dart';
-import '../packages/commands/scan.dart';
 import '../conf.dart';
+import '../state.dart';
 
 class _PackagesDirState extends State<PackagesDir> {
-  @override
-  void initState() {
-    setStatus("Scanning packages");
-    packages = scanPackages();
-    clearStatus();
-    super.initState();
-  }
+  _PackagesDirState({@required this.packagesDir});
+
+  final Directory packagesDir;
 
   @override
   Widget build(BuildContext context) {
+    final CodePackages packages = Provider.of<Store>(context).state.packages;
     return SingleChildScrollView(
         child: Scrollbar(
             child: Column(
@@ -60,7 +60,10 @@ class PackageLine extends StatelessWidget {
             logo,
             GestureDetector(
                 child: Text(" ${package.name}", overflow: TextOverflow.clip),
-                onTap: () => selectPackage(package)),
+                onTap: () {
+                  setMain(ViewPackage());
+                  selectPackage(package);
+                }),
           ],
         ),
         padding: const EdgeInsets.fromLTRB(10.0, 4.0, 5.0, 4.0));
@@ -68,6 +71,11 @@ class PackageLine extends StatelessWidget {
 }
 
 class PackagesDir extends StatefulWidget {
+  PackagesDir({@required this.packagesDir});
+
+  final Directory packagesDir;
+
   @override
-  _PackagesDirState createState() => _PackagesDirState();
+  _PackagesDirState createState() =>
+      _PackagesDirState(packagesDir: packagesDir);
 }

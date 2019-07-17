@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import '../../models/package.dart';
-import '../../conf.dart';
 
-CodePackages scanPackages() {
+CodePackages scanPackages(Directory packagesDir) {
   final _flutterPackages = <CodePackage>[];
   final _dartPackages = <CodePackage>[];
   final List<FileSystemEntity> pkgs = packagesDir.listSync();

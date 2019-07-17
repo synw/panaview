@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../conf.dart';
 import 'packages_dir.dart';
 import '../view_package.dart';
@@ -16,10 +15,11 @@ class _IntroZoneState extends State<IntroZone> {
       final String packagesDirPath = raw.toString();
       //print("******** $packagesDirPath / ${packagesDirPath != null}");
       if (raw != null) {
-        packagesDir = Directory(packagesDirPath);
+        final dir = Directory(packagesDirPath);
+        setPackagesDir(dir);
         hasPackagesDir = true;
         clearStatus();
-        setSide(PackagesDir());
+        setSide(PackagesDir(packagesDir: dir));
       } else {
         setStatus("Pick a folder for packages");
       }

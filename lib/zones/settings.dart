@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:filex/filex.dart';
 import 'appbar.dart';
 import '../conf.dart';
@@ -7,8 +8,10 @@ import '../state.dart';
 class SettingsState extends State<SettingsZone> {
   @override
   Widget build(BuildContext context) {
+    final AppState state = Provider.of<Store>(context).state;
     final dirPaths = <String>[];
-    topButtons.forEach((dynamic b) => dirPaths.add(b.values.first.toString()));
+    state.topButtons
+        .forEach((dynamic b) => dirPaths.add(b.values.first.toString()));
     return Container(
       child: Padding(
           padding: const EdgeInsets.all(5.0),
@@ -28,17 +31,30 @@ class SettingsState extends State<SettingsZone> {
                     Widget w;
                     if (dirPaths.contains(dir.path)) {
                       w = IconButton(
-                          icon: const Icon(Icons.delete), onPressed: () {});
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            final btns = <dynamic>[];
+                            for (final btn in state.topButtons) {
+                              for (final filename in btn.keys) {
+                                if (filename != dir.filename) {
+                                  btns.add(<String, String>{
+                                    filename.toString():
+                                        btn[filename].toString()
+                                  });
+                                }
+                              }
+                            }
+                            setTopButtons(btns, state.packagesDir);
+                            setAppBar(AppBarZone());
+                          });
                     } else {
                       w = IconButton(
                           icon: const Icon(Icons.file_download),
                           onPressed: () {
-                            topButtons
-                                .add(<String, String>{dir.filename: dir.path});
-                            conf.write(<String, dynamic>{
-                              "top_buttons": topButtons,
-                              "packages_directory": packagesDir.path
-                            });
+                            final topButtons = <dynamic>[]
+                              ..addAll(state.topButtons)
+                              ..add(<String, String>{dir.filename: dir.path});
+                            setTopButtons(topButtons, state.packagesDir);
                             setAppBar(AppBarZone());
                           });
                     }
