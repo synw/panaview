@@ -18,11 +18,14 @@ void processAnalysisResults(
   }
   analysis.description = data["pubspec"]["description"].toString();
   final deps = <PackageDependency>[];
-  for (final key in data["pubspec"]["dependencies"].keys) {
-    if (key != "flutter")
-      deps.add(PackageDependency(
-          name: key.toString(),
-          version: data["pubspec"]["dependencies"][key].toString()));
+  final spec = data["pubspec"] as Map<String, dynamic>;
+  if (spec.containsKey("dependencies")) {
+    for (final key in data["pubspec"]["dependencies"].keys) {
+      if (key != "flutter")
+        deps.add(PackageDependency(
+            name: key.toString(),
+            version: data["pubspec"]["dependencies"][key].toString()));
+    }
   }
   analysis.dependencies = deps;
   var numErrors = int.parse(data["health"]["analyzerErrorCount"].toString());

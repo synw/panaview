@@ -19,7 +19,10 @@ class DesktopPage extends StatelessWidget {
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Expanded(flex: 2, child: update.state.sideBarZone),
+                        Expanded(
+                            flex: 2,
+                            child: SingleChildScrollView(
+                                child: update.state.sideBarZone)),
                         DesktopVerticalDivider(),
                         Expanded(
                           flex: 8,

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../conf.dart';
+import 'select_packages_dir.dart';
 import 'packages_dir.dart';
 import '../view_package.dart';
 
@@ -22,6 +23,7 @@ class _IntroZoneState extends State<IntroZone> {
         setSide(PackagesDir(packagesDir: dir));
       } else {
         setStatus("Pick a folder for packages");
+        setSide(SelectPackagesDirZone());
       }
       setMain(ViewPackage());
     });

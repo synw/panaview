@@ -27,7 +27,8 @@ class SettingsState extends State<SettingsZone> {
                     BoxDecoration(border: Border.all(color: Colors.grey)),
                 height: 500,
                 width: 400,
-                child: Filex(
+                child: SingleChildScrollView(
+                    child: Filex(
                   controller: controller,
                   directoryTrailingBuilder: (context, dir) {
                     Widget w;
@@ -62,7 +63,7 @@ class SettingsState extends State<SettingsZone> {
                     }
                     return w;
                   },
-                ))
+                )))
           ])),
     );
   }
