@@ -1,7 +1,23 @@
 # Panaview
 
-Desktop application to visualize Dart packages analysis. Runs pana and displays the results.
+Desktop application to visualize Dart packages analysis. Runs [pana](https://pub.dev/packages/pana) and displays the results.
 
-Uses [go-flutter](https://github.com/go-flutter-desktop/go-flutter) to build the desktop app. Run with [hover](https://github.com/go-flutter-desktop/hover) or [download](https://github.com/synw/panaview/releases/download/latest/panaview_linux) a compiled version: only for linux for now.
+Uses [go-flutter](https://github.com/go-flutter-desktop/go-flutter) to build the desktop app. Use the binary release to run it for Linux:
+
+```bash
+git clone https://github.com/synw/panaview.git
+cd panaview/bin
+unzip panaview.zip
+cd panaview
+./panaview
+```
+
+Or run with [hover](https://github.com/go-flutter-desktop/hover):
+
+```bash
+git clone https://github.com/synw/panaview.git
+cd panaview
+hover run
+```
 
 ![Screenshot](img/screenshot.png)
