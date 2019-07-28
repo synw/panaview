@@ -7,8 +7,8 @@ Uses [go-flutter](https://github.com/go-flutter-desktop/go-flutter) to build the
 ```bash
 git clone https://github.com/synw/panaview.git
 cd panaview/bin
-unzip panaview.zip
-cd panaview
+unzip panaview_linux.zip
+cd linux
 ./panaview
 ```
 
