@@ -18,7 +18,7 @@ StreamController<CodePackage> currentPackage =
 
 void initConf() {
   conf = ConfigManager.auto("panaview")..read();
-  if (conf.data.containsKey("top_buttons")) {
+  if (conf.data.containsKey("top_buttons") == true) {
     final topButtons = conf.key("top_buttons") as List<dynamic>;
     Store.setTopButtons(topButtons);
   }

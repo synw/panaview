@@ -5,12 +5,14 @@ import 'packages_dir.dart';
 import '../conf.dart';
 
 class SelectPackagesDirZone extends StatelessWidget {
+  final controller = FilexController(path: conf.homeDir.path);
+
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
         child: Filex(
             compact: true,
-            directory: Directory(conf.homeDir.path),
+            controller: controller,
             directoryTrailingBuilder: (context, item) {
               return GestureDetector(
                   child: const Padding(

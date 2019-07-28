@@ -6,6 +6,8 @@ import '../conf.dart';
 import '../state.dart';
 
 class SettingsState extends State<SettingsZone> {
+  final controller = FilexController(path: conf.homeDir.path);
+
   @override
   Widget build(BuildContext context) {
     final AppState state = Provider.of<Store>(context).state;
@@ -26,7 +28,7 @@ class SettingsState extends State<SettingsZone> {
                 height: 500,
                 width: 400,
                 child: Filex(
-                  directory: conf.homeDir,
+                  controller: controller,
                   directoryTrailingBuilder: (context, dir) {
                     Widget w;
                     if (dirPaths.contains(dir.path)) {
