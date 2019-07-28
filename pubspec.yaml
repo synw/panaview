@@ -1,8 +1,8 @@
 name: panaview
-description: Network nodes communication in Dart. Send commands to nodes and get the responses
-homepage: https://github.com/synw/isohttpd
+description: A desktop application to visualize pana analysis results. Analyze your packages and get a visual report.
+homepage: https://github.com/synw/panaview
 author: synw <ansterj@gmail.com>
-version: 0.0.1
+version: 0.2.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -10,10 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  desktopia:
-    path: ../desktopia
-  filex:
-    path: ../filex
+  desktopia: ^0.1.0
+  filex: ^0.1.0
   provider: ^3.0.0+1
 
 
