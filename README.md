@@ -5,8 +5,7 @@ Desktop application to visualize Dart packages analysis. Runs [pana](https://pub
 Uses [go-flutter](https://github.com/go-flutter-desktop/go-flutter) to build the desktop app. Use the binary release to run it for Linux:
 
 ```bash
-git clone https://github.com/synw/panaview.git
-cd panaview/bin
+wget https://github.com/synw/panaview/releases/download/0.2.0/panaview_linux.zip
 unzip panaview_linux.zip
 cd linux
 ./panaview
