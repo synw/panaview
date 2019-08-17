@@ -11,6 +11,12 @@ cd linux
 ./panaview
 ```
 
+*Note*: you need the Roboto font installed on your system: for Debian/Ubuntu:
+
+```bash
+sudo apt install fonts-roboto
+```
+
 Or run with [hover](https://github.com/go-flutter-desktop/hover):
 
 ```bash
