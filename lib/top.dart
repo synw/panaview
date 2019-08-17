@@ -6,7 +6,7 @@ import 'state.dart';
 class _TopAppBlocState extends State<TopAppBloc> {
   @override
   Widget build(BuildContext context) {
-    final update = Provider.of<Store>(context);
+    final store = Provider.of<Store>(context);
     return Container(
         color: const Color(0xffcecece),
         child: Column(children: <Widget>[
@@ -19,13 +19,13 @@ class _TopAppBlocState extends State<TopAppBloc> {
           Row(
             children: <Widget>[
               Expanded(
-                child: update.state.appBarZone,
+                child: store.state.appBarZone,
               ),
               Column(
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.fromLTRB(10.0, 0, 30.0, 0),
-                    child: update.state.statusZone,
+                    child: store.state.statusZone,
                   )
                 ],
               )
